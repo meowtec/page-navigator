@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style type="text/css">
+    .nav{
+      margin: 10px 0;
+      font-size: 12px;
+    }
+    .nav a{
+      text-decoration: none;
+      color: #000;
+    }
+    .nav span{
+      color: #999;
+    }
+    .nav a, .nav span{
+      display: inline-block;
+      padding: 2px 6px;
+      margin: 0 3px;
+    }
+    .nav .item{
+
+      border: 1px solid #4cc;
+      text-decoration: none;
+    }
+    .nav .item:hover{
+      border: 1px solid #69f;
+    }
+    .nav .current{
+      background: #9cc;
+      border-color: #9cc;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+<h3>basic</h3>
+<div id="c-0-0" class="nav"></div>
+<div id="c-0-1" class="nav"></div>
+<div id="c-0-2" class="nav"></div>
+<div id="c-0-3" class="nav"></div>
+<h3>设置文字和链接</h3>
+<div id="c-1" class="nav"></div>
+<script type="text/javascript" src="page-navigator.js"></script>
+<script type="text/javascript">
+var $ = function(s){
+  return document.getElementById(s)
+}
+var nav = new pageNavigator()
+$('c-0-0').innerHTML = nav.create(1, 5)
+$('c-0-1').innerHTML = nav.create(5, 5)
+$('c-0-2').innerHTML = nav.create(3, 10)
+$('c-0-3').innerHTML = nav.create(15, 100)
+
+var nav2 = new pageNavigator({
+  linkHelper: function(page){
+    return 'list.html?page=' + page
+  },
+  prevText: '<- 前',
+  nextText: '后 ->',
+  moreText: '......'
+})
+$('c-1').innerHTML = nav2.create(4, 10)
+
+</script>
+</body>
+</html>
