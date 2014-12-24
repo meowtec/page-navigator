@@ -96,7 +96,7 @@
 
   pageNavigator.prototype.create = function(current, max) {
     var analyseRst = pageAnalyse(current, max, this._navSize)
-      //生成字符串
+
     var str = ''
 
     str = str + this._prevHelper(analyseRst.prev, {
@@ -120,10 +120,10 @@
 
 
     if (analyseRst.nextMore) {
-      str = str + this._numberHelper(max, {
+      str = str + this._nextMoreHelper() + this._numberHelper(max, {
         current: false,
         last: true
-      }, this._linkHelper) + this._nextMoreHelper()
+      }, this._linkHelper)
     }
 
     str = str + this._nextHelper(analyseRst.next, {
