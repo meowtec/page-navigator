@@ -80,7 +80,7 @@
     return str.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/&/g, '&amp;')
   }
 
-  function pageNavigator(setting) {
+  function PageNavigator(setting) {
     setting = setting || {}
     this._numberHelper = setting.numberHelper || numberHelper
     this._nextHelper = setting.nextHelper || nextHelper
@@ -94,7 +94,7 @@
     this._navSize = setting.size || 7
   }
 
-  pageNavigator.prototype.create = function(current, max) {
+  PageNavigator.prototype.create = function(current, max) {
     var analyseRst = pageAnalyse(current, max, this._navSize)
 
     var str = ''
@@ -132,5 +132,5 @@
 
     return str;
   }
-  window.pageNavigator = pageNavigator
+  window.PageNavigator = PageNavigator
 })()
