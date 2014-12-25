@@ -54,11 +54,13 @@ $('c-0-2').innerHTML = nav.create(3, 10)
 $('c-0-3').innerHTML = nav.create(15, 100)
 
 var nav2 = new PageNavigator({
-  linkHelper: function(page){
-    return 'list.html?page=' + page
-  },
-  prevText: '← prev',
-  nextText: 'next →',
+  linkHelper: 'list.html?page={{page}}',
+  // or:
+  // linkHelper: function(page) {
+  //   return 'list.html?page=' + page
+  // }
+  prevText: '←',
+  nextText: '→',
   moreText: '......',
   size: 9
 })

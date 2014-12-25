@@ -96,11 +96,17 @@
     this._prevHelper = setting.prevHelper || prevHelper
     this._prevMoreHelper = setting.prevMoreHelper || moreHelper
     this._nextMoreHelper = setting.nextMoreHelper || moreHelper
-    this.link = setting.linkHelper || linkHelper
     this.prevText = entitize(setting.prevText || '上一页')
     this.nextText = entitize(setting.nextText || '下一页')
     this.moreText = entitize(setting.moreText || '...')
     this._navSize = setting.size || 7
+    this.link = setting.linkHelper || linkHelper
+    if(typeof this.link === 'string'){
+      var _link = this.link
+      this.link = function(page) {
+        return _link.replace(/\{\{page\}\}/g, page)
+      }
+    }
   }
 
   PageNavigator.prototype.create = function(current, max) {
@@ -110,13 +116,13 @@
 
     str = str + this._prevHelper(analyseRst.prev, {
       disabled: !analyseRst.prev
-    }, this._linkHelper)
+    })
 
     if (analyseRst.prevMore) {
       str = str + this._numberHelper(1, {
         current: false,
         first: true
-      }, this._linkHelper) + this._prevMoreHelper()
+      }) + this._prevMoreHelper()
     }
 
     for (var i = analyseRst.from; i <= analyseRst.to; i++) {
@@ -124,7 +130,7 @@
         current: i === current,
         first: i === 1,
         last: i === max
-      }, this._linkHelper)
+      })
     }
 
 
@@ -132,12 +138,12 @@
       str = str + this._nextMoreHelper() + this._numberHelper(max, {
         current: false,
         last: true
-      }, this._linkHelper)
+      })
     }
 
     str = str + this._nextHelper(analyseRst.next, {
       disabled: !analyseRst.next
-    }, this._linkHelper)
+    })
 
     return str;
   }
