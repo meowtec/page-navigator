@@ -37,6 +37,7 @@
   // Refer to http://jslinterrors.com/missing-radix-parameter/
   "-W065": true,
   "browser": true,
+  "scripturl": true,
   "predef": [
     "define",
     "seajs"
