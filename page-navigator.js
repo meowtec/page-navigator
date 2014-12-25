@@ -42,6 +42,14 @@
     }
   }
 
+  var stringReplace = function(str, dict) {
+    // 未对正则特殊字符进行处理，注意
+    for(var key in dict){
+      str = str.replace(new RegExp('{{'+key+'}}', 'g'), dict[key])
+    }
+    return str
+  }
+
   var numberHelper = function(page, prop) {
     /*
     * prop.current bool 当前页
@@ -49,9 +57,14 @@
     * prop.last bool 最后一页
     * */
     if (prop.current) {
-      return '<span class="item number current" data-index="' + page + '">' + page + '</span>'
+      return stringReplace('<span class="item number current" data-index="{{page}}">{{page}}</span>', {
+        page: page
+      })
     } else {
-      return '<a href="' + this.link(page) + '" class="item number" data-index="' + page + '">' + page + '</a>'
+      return stringReplace('<a href="{{link}}" class="item number" data-index="{{page}}">{{page}}</a>', {
+        page: page,
+        link: this.link(page)
+      })
     }
   }
   var nextHelper = function(page, prop) {
@@ -59,9 +72,16 @@
     * prop.disabled 下一页是否可用
     * */
     if (prop.disabled) {
-      return '<span class="item next disabled" data-index="' + page + '">' + this.nextText + '</span>'
+      return stringReplace('<span class="item next disabled" data-index="{{page}}">{{nextText}}</span>', {
+        page: page,
+        nextText: this.nextText
+      })
     } else {
-      return '<a href="' + this.link(page) + '" class="item next" data-index="' + page + '">' + this.nextText + '</a>'
+      return stringReplace('<a href="{{link}}" class="item next" data-index="{{page}}">{{nextText}}</a>', {
+        link: this.link(page),
+        page: page,
+        nextText: this.nextText
+      })
     }
   }
   var prevHelper = function(page, prop) {
@@ -69,13 +89,22 @@
      * prop.disabled 上一页是否可用
      * */
     if (prop.disabled) {
-      return '<span class="item prev disabled" data-index="' + page + '">' + this.prevText + '</span>'
+      return stringReplace('<span class="item prev disabled" data-index="{{page}}">{{prevText}}</span>', {
+        page: page,
+        prevText: this.prevText
+      })
     } else {
-      return '<a href="' + this.link(page) + '" class="item prev" data-index="' + page + '">' + this.prevText + '</a>'
+      return stringReplace('<a href="{{link}}" class="item prev" data-index="{{page}}">{{prevText}}</a>', {
+        link: this.link(page),
+        page: page,
+        prevText: this.prevText
+      })
     }
   }
   var moreHelper = function() {
-    return '<span class="item more">' + this.moreText + '</span>'
+    return stringReplace('<span class="item more">{{moreText}}</span>', {
+      moreText: this.moreText
+    })
   }
 
   var linkHelper = function() {
@@ -104,7 +133,7 @@
     if(typeof this.link === 'string'){
       var _link = this.link
       this.link = function(page) {
-        return _link.replace(/\{\{page\}\}/g, page)
+        return stringReplace(_link, {page: page})
       }
     }
   }
