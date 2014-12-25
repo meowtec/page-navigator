@@ -44,10 +44,10 @@
 
   var numberHelper = function(page, prop) {
     /*
-      prop.current bool 当前页
-      prop.first bool 第一页，等同于 page === 1
-      prop.last bool 最后一页
-    */
+    * prop.current bool 当前页
+    * prop.first bool 第一页，等同于 page === 1
+    * prop.last bool 最后一页
+    * */
     if (prop.current) {
       return '<span class="item number current" data-index="' + page + '">' + page + '</span>'
     } else {
@@ -55,6 +55,9 @@
     }
   }
   var nextHelper = function(page, prop) {
+    /*
+    * prop.disabled 下一页是否可用
+    * */
     if (prop.disabled) {
       return '<span class="item next disabled" data-index="' + page + '">' + this.nextText + '</span>'
     } else {
@@ -62,6 +65,9 @@
     }
   }
   var prevHelper = function(page, prop) {
+    /*
+     * prop.disabled 上一页是否可用
+     * */
     if (prop.disabled) {
       return '<span class="item prev disabled" data-index="' + page + '">' + this.prevText + '</span>'
     } else {
@@ -73,6 +79,9 @@
   }
 
   var linkHelper = function() {
+    /*
+     * args[0] 链接所指页数
+     * */
     return 'javascript:void(0);'
   }
 
@@ -92,7 +101,6 @@
     this.nextText = entitize(setting.nextText || '下一页')
     this.moreText = entitize(setting.moreText || '...')
     this._navSize = setting.size || 7
-    console.log(this)
   }
 
   PageNavigator.prototype.create = function(current, max) {
