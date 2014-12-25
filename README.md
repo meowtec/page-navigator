@@ -27,8 +27,9 @@ var nav2 = new PageNavigator({
   linkHelper: function(page){
     return 'list.html?page=' + page
   },
-  prevText: '<- 前',
-  nextText: '后 ->',
-  moreText: '......'
+  prevText: '← prev',
+  nextText: 'next →',
+  moreText: '......',
+  size: 9
 })
 ```

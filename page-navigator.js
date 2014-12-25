@@ -49,35 +49,35 @@
       prop.last bool 最后一页
     */
     if (prop.current) {
-      return '<span class="item current" data-index="' + page + '">' + page + '</span>'
+      return '<span class="item number current" data-index="' + page + '">' + page + '</span>'
     } else {
-      return '<a href="' + this.link(page) + '" class="item" data-index="' + page + '">' + page + '</a>'
+      return '<a href="' + this.link(page) + '" class="item number" data-index="' + page + '">' + page + '</a>'
     }
   }
   var nextHelper = function(page, prop) {
     if (prop.disabled) {
-      return '<span class="next disabled" data-index="' + page + '">' + this.nextText + '</span>'
+      return '<span class="item next disabled" data-index="' + page + '">' + this.nextText + '</span>'
     } else {
-      return '<a href="' + this.link(page) + '" class="next" data-index="' + page + '">' + this.nextText + '</a>'
+      return '<a href="' + this.link(page) + '" class="item next" data-index="' + page + '">' + this.nextText + '</a>'
     }
   }
   var prevHelper = function(page, prop) {
     if (prop.disabled) {
-      return '<span class="prev disabled" data-index="' + page + '">' + this.prevText + '</span>'
+      return '<span class="item prev disabled" data-index="' + page + '">' + this.prevText + '</span>'
     } else {
-      return '<a href="' + this.link(page) + '" class="prev" data-index="' + page + '">' + this.prevText + '</a>'
+      return '<a href="' + this.link(page) + '" class="item prev" data-index="' + page + '">' + this.prevText + '</a>'
     }
   }
   var moreHelper = function() {
-    return '<span class="more">' + this.moreText + '</span>'
+    return '<span class="item more">' + this.moreText + '</span>'
   }
 
   var linkHelper = function() {
-    return 'javascript:;'
+    return 'javascript:void(0);'
   }
 
-  var entity = function(str) {
-    return str.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/&/g, '&amp;')
+  var entitize = function(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
   }
 
   function PageNavigator(setting) {
@@ -88,10 +88,11 @@
     this._prevMoreHelper = setting.prevMoreHelper || moreHelper
     this._nextMoreHelper = setting.nextMoreHelper || moreHelper
     this.link = setting.linkHelper || linkHelper
-    this.prevText = setting.prevText || '上一页'
-    this.nextText = setting.nextText || '下一页'
-    this.moreText = setting.moreText || '...'
+    this.prevText = entitize(setting.prevText || '上一页')
+    this.nextText = entitize(setting.nextText || '下一页')
+    this.moreText = entitize(setting.moreText || '...')
     this._navSize = setting.size || 7
+    console.log(this)
   }
 
   PageNavigator.prototype.create = function(current, max) {

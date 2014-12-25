@@ -7,6 +7,7 @@
     .nav{
       margin: 10px 0;
       font-size: 12px;
+      font-family: "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", "Lucida Grande", sans-serif;
     }
     .nav a{
       text-decoration: none;
@@ -15,23 +16,21 @@
     .nav span{
       color: #999;
     }
-    .nav a, .nav span{
+    .nav .item{
       display: inline-block;
-      padding: 2px 6px;
+      padding: 3px 8px;
       margin: 0 3px;
     }
-    .nav .item{
-
-      border: 1px solid #4cc;
-      text-decoration: none;
-    }
-    .nav .item:hover{
-      border: 1px solid #69f;
+    .nav .number:hover{
+      background: #99dddd;
+      color: #ffffff;
     }
     .nav .current{
       background: #9cc;
-      border-color: #9cc;
       color: #fff;
+    }
+    .nav .prev:hover, .nav .next:hover{
+      color: #9cc;
     }
   </style>
 </head>
@@ -58,11 +57,12 @@ var nav2 = new PageNavigator({
   linkHelper: function(page){
     return 'list.html?page=' + page
   },
-  prevText: '<- 前',
-  nextText: '后 ->',
-  moreText: '......'
+  prevText: '← prev',
+  nextText: 'next →',
+  moreText: '......',
+  size: 9
 })
-$('c-1').innerHTML = nav2.create(4, 10)
+$('c-1').innerHTML = nav2.create(4, 14)
 
 </script>
 </body>
