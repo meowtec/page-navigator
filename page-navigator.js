@@ -1,5 +1,6 @@
 ;(function(){
   var pageAnalyse = function(current, max, navSize) {
+    navSize = navSize || 7
     var prev,
       next,
       prevMore,
@@ -44,135 +45,140 @@
 
   var stringReplace = function(str, dict) {
     // 未对正则特殊字符进行处理，注意
+    var value
     for(var key in dict){
-      str = str.replace(new RegExp('{{'+key+'}}', 'g'), dict[key])
+      value = dict[key]
+      if(value == null){
+        value = ''
+      }
+      str = str.replace(new RegExp('{{'+key+'}}', 'g'), value)
     }
     return str
   }
 
-  var numberHelper = function(page, prop) {
-    /*
-    * prop.current bool 当前页
-    * prop.first bool 第一页，等同于 page === 1
-    * prop.last bool 最后一页
-    * */
-    if (prop.current) {
-      return stringReplace('<span class="item number current" data-index="{{page}}">{{page}}</span>', {
-        page: page
-      })
-    } else {
-      return stringReplace('<a href="{{link}}" class="item number" data-index="{{page}}">{{page}}</a>', {
-        page: page,
-        link: this.link(page)
-      })
+  var cloneObject = function(){
+    var obj = {}
+    for(var i=0; i<arguments.length; i++){
+      var _obj = arguments[i] || {}
+      for(var key in _obj){
+        obj[key] = _obj[key]
+      }
     }
-  }
-  var nextHelper = function(page, prop) {
-    /*
-    * prop.disabled 下一页是否可用
-    * */
-    if (prop.disabled) {
-      return stringReplace('<span class="item next disabled" data-index="{{page}}">{{nextText}}</span>', {
-        page: page,
-        nextText: this.nextText
-      })
-    } else {
-      return stringReplace('<a href="{{link}}" class="item next" data-index="{{page}}">{{nextText}}</a>', {
-        link: this.link(page),
-        page: page,
-        nextText: this.nextText
-      })
-    }
-  }
-  var prevHelper = function(page, prop) {
-    /*
-     * prop.disabled 上一页是否可用
-     * */
-    if (prop.disabled) {
-      return stringReplace('<span class="item prev disabled" data-index="{{page}}">{{prevText}}</span>', {
-        page: page,
-        prevText: this.prevText
-      })
-    } else {
-      return stringReplace('<a href="{{link}}" class="item prev" data-index="{{page}}">{{prevText}}</a>', {
-        link: this.link(page),
-        page: page,
-        prevText: this.prevText
-      })
-    }
-  }
-  var moreHelper = function() {
-    return stringReplace('<span class="item more">{{moreText}}</span>', {
-      moreText: this.moreText
-    })
+    return obj
   }
 
-  var linkHelper = function() {
-    /*
-     * args[0] 链接所指页数
-     * */
-    return 'javascript:void(0);'
+  var defaultSetting = {
+    numberHelper:       '<a href="{{link}}" class="item number" data-page="{{page}}">{{page}}</a>', // page,link,current,max
+    currentHelper:      '<span class="item number current" data-page="{{page}}">{{page}}</span>',   // page,link,current,max
+    prevHelper:         '<a href="{{link}}" class="item prev" data-page="{{page}}">{{text}}</a>',   // page,link,current,max,text
+    prevDisabledHelper: '<span class="item prev disabled">{{text}}</span>',                         // page=null,link,current,max,text
+    nextHelper:         '<a href="{{link}}" class="item next" data-page="{{page}}">{{text}}</a>',   // page,link,current,max,text
+    nextDisabledHelper: '<span class="item next disabled">{{text}}</span>',                         // page=null,link,current,max,text
+    moreHelper:         '<span class="item more">{{text}}</span>',                                  // current, max, text
+    linkHelper: 'javascript:void(0);',                                                              // page, current, max
+    moreText:   '…',
+    nextText:   '下一页',
+    prevText:   '上一页',
+    size: 7
   }
+
 
   var entitize = function(str) {
     return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
   }
 
   function PageNavigator(setting) {
-    setting = setting || {}
-    this._numberHelper = setting.numberHelper || numberHelper
-    this._nextHelper = setting.nextHelper || nextHelper
-    this._prevHelper = setting.prevHelper || prevHelper
-    this._prevMoreHelper = setting.prevMoreHelper || moreHelper
-    this._nextMoreHelper = setting.nextMoreHelper || moreHelper
-    this.prevText = entitize(setting.prevText || '上一页')
-    this.nextText = entitize(setting.nextText || '下一页')
-    this.moreText = entitize(setting.moreText || '...')
-    this._navSize = setting.size || 7
-    this.link = setting.linkHelper || linkHelper
-    if(typeof this.link === 'string'){
-      var _link = this.link
-      this.link = function(page) {
-        return stringReplace(_link, {page: page})
-      }
+    var _setting = cloneObject(defaultSetting, setting)
+    this._setting = _setting
+    var _ = _setting
+    _.prevMoreHelper = _.prevMoreHelper || _.moreHelper
+    _.nextMoreHelper = _.nextMoreHelper || _.moreHelper
+    _.prevMoreText = _.prevMoreText || _.moreText
+    _.nextMoreText = _.nextMoreText || _.moreText
+
+    // entitize
+    _.nextMoreText = entitize(_.nextMoreText)
+    _.prevMoreText = entitize(_.prevMoreText)
+    _.nextText = entitize(_.nextText)
+    _.prevText = entitize(_.prevText)
+
+
+  }
+
+  PageNavigator.prototype._link = function(page, current, max) {
+    var link
+    if(page == null){
+      link = ''
+    }else{
+      link = stringReplace(this._setting.linkHelper, {
+        page: page,
+        current: current,
+        max: max
+      })
     }
+    return link
   }
 
   PageNavigator.prototype.create = function(current, max) {
     var analyseRst = pageAnalyse(current, max, this._navSize)
-
+    var setting = this._setting
     var str = ''
 
-    str = str + this._prevHelper(analyseRst.prev, {
-      disabled: !analyseRst.prev
+    var _prevHelper = analyseRst.prev?setting.prevHelper:setting.prevDisabledHelper
+    str = str + stringReplace(_prevHelper, {
+      page: analyseRst.prev,
+      link: this._link(analyseRst.prev, current, max),
+      text: setting.prevText,
+      current: current,
+      max: max
     })
 
     if (analyseRst.prevMore) {
-      str = str + this._numberHelper(1, {
-        current: false,
-        first: true
-      }) + this._prevMoreHelper()
+      str = str + stringReplace(setting.numberHelper, {
+        page: 1,
+        link: this._link(1, current, max),
+        current: current,
+        max: max
+      }) + stringReplace(setting.prevMoreHelper, {
+        text: setting.prevMoreText,
+        current: current,
+        max: max
+      })
     }
 
     for (var i = analyseRst.from; i <= analyseRst.to; i++) {
-      str = str + this._numberHelper(i, {
-        current: i === current,
-        first: i === 1,
-        last: i === max
+      var _helper = i === current?setting.currentHelper:setting.numberHelper
+      str = str + stringReplace(_helper, {
+        page: i,
+        link: this._link(i, current, max),
+        current: current,
+        max: max
       })
     }
-
 
     if (analyseRst.nextMore) {
-      str = str + this._nextMoreHelper() + this._numberHelper(max, {
-        current: false,
-        last: true
+      str = str + stringReplace(setting.nextMoreHelper, {
+        text: setting.nextMoreText,
+        current: current,
+        max: max
+      }) + stringReplace(setting.numberHelper, {
+        page: max,
+        link: this._link(max, current, max),
+        current: current,
+        max: max
       })
     }
 
-    str = str + this._nextHelper(analyseRst.next, {
-      disabled: !analyseRst.next
+    var _nextHelper = analyseRst.next?setting.nextHelper:setting.nextDisabledHelper
+    str = str + stringReplace(_nextHelper, {
+      page: analyseRst.next,
+      link: this._link(analyseRst.next, current, max),
+      text: setting.nextText,
+      current: current,
+      max: max
     })
+
+
 
     return str;
   }
