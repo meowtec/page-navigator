@@ -95,34 +95,31 @@ class PageNavigator:
 
         prev_page = analyse_rst.get('prev')
         prev_helper = setting['prev_helper'] if prev_page else setting['prev_disabled_helper']
-        html = html + string_replace(prev_helper, page=prev_page, link=self._link(prev_page, current, max),
+        html = html + string_replace(prev_helper, page=prev_page, link=self.__link(prev_page, current, max),
                                      text=setting['prev_text'], current=current, max=max)
 
         if analyse_rst.get('prev_more'):
-            html = html + string_replace(setting['number_helper'], page=1, link=self._link(1, current, max), current=current, max=max) \
+            html = html + string_replace(setting['number_helper'], page=1, link=self.__link(1, current, max), current=current, max=max) \
                    + string_replace(setting['prev_more_helper'], text=setting['prev_more_text'], current=current, max=max)
 
         for i in range(analyse_rst['from'], analyse_rst['to']+1):
             _helper = setting['current_helper'] if i == current else setting['number_helper']
-            html = html + string_replace(_helper, page=i, link=self._link(i, current, max), current=current, max=max)
+            html = html + string_replace(_helper, page=i, link=self.__link(i, current, max), current=current, max=max)
 
         if analyse_rst.get('next_more'):
             html = html + string_replace(setting['next_more_helper'], text=setting['next_more_text'], current=current, max=max) \
-                   + string_replace(setting['number_helper'], page=max, link=self._link(max, current, max), current=current, max=max)
+                   + string_replace(setting['number_helper'], page=max, link=self.__link(max, current, max), current=current, max=max)
 
         next_page=analyse_rst.get('next')
         next_helper = setting['next_helper'] if next_page else setting['next_disabled_helper']
-        html = html + string_replace(next_helper, page=next_page, link=self._link(next_page, current, max),
+        html = html + string_replace(next_helper, page=next_page, link=self.__link(next_page, current, max),
                                      text=setting['next_text'], current=current, max=max)
 
         return html
 
-    def _link(self, page, current=None, max=None):
+    def __link(self, page, current=None, max=None):
         if page is None:
             link = ''
         else:
             link = string_replace(self._setting['link_helper'], page=page, current=current, max=max)
         return link
-
-nav = PageNavigator()
-print nav.create(1, 3)
