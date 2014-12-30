@@ -6,8 +6,10 @@ page-navigator
 git clone git@github.com:meowtec/page-navigator.git
 cd page-navigator
 ```
-PageNavigator 有 js/php/python 三种版本，有三个例子文件 (example.) html/php/py 分别与之对应。
-你可以直接在浏览器中打开 `example.html`
+`PageNavigator`有`js/php/python`三种版本，有三个例子文件 (example.) html/php/py 分别与之对应。
+你可以通过直接在浏览器中打开`example.html`，或者在项目目录下运行`example.py`后打开生成文件，或者把`pagenavigator.php`和`example.php`放在`php`的服务器目录下并访问`example.php`来运行这三个样例。
+
+`pagenavigator.js`可以直接通过`<script>`标签在浏览器中引入，也可以使用`require.js/sea.js`等工具加载，也可以在`nodejs`中使用。
 
 
 #### 使用
@@ -26,7 +28,7 @@ var html = nav.create(currentPage, maxPage) // html 字符串
 @return: 导航 html 字符串
 
 #### 设置
-`PageNavigator(setting)` 在初始化时可以传入一个设置参数`setting`，类型为 Object:
+`PageNavigator(setting)`在初始化时可以传入一个设置参数`setting`，类型为`Object`:
 ```
 var nav2 = new PageNavigator({
   linkHelper: 'list.html?page={{page}}&from={{current}}&max={{max}}',
