@@ -1,6 +1,6 @@
 ;(function(){
-  var pageAnalyse = function(current, max, navSize) {
-    navSize = navSize || 7
+  var pageAnalyse = function(current, max, size) {
+    size = size || 7
     var prev,
       next,
       prevMore,
@@ -10,25 +10,25 @@
     prev = current > 1 ? current - 1 : null
     next = max > current ? current + 1 : null
 
-    if (max <= navSize) {
+    if (max <= size) {
       from = 1
       to = max
       prevMore = false
       nextMore = false
     } else {
-      if (current <= Math.ceil(navSize / 2)) {
+      if (current <= Math.ceil(size / 2)) {
         from = 1
-        to = navSize - 1
+        to = size - 1
         prevMore = false
         nextMore = true
-      } else if (max - current < Math.ceil(navSize / 2)) {
+      } else if (max - current < Math.ceil(size / 2)) {
         to = max
-        from = max - Math.ceil(navSize / 2) - 1
+        from = max - Math.ceil(size / 2) - 1
         prevMore = true
         nextMore = false
       } else {
-        from = current - Math.ceil(navSize / 2) + 2
-        to = current + Math.ceil(navSize / 2) - 2
+        from = current - Math.ceil(size / 2) + 2
+        to = current + Math.ceil(size / 2) - 2
         prevMore = true
         nextMore = true
       }
@@ -93,12 +93,10 @@
     var _ = _setting
     _.prevMoreHelper = _.prevMoreHelper || _.moreHelper
     _.nextMoreHelper = _.nextMoreHelper || _.moreHelper
-    _.prevMoreText = _.prevMoreText || _.moreText
-    _.nextMoreText = _.nextMoreText || _.moreText
+    _.prevMoreText = entitize(_.prevMoreText || _.moreText)
+    _.nextMoreText = entitize(_.nextMoreText || _.moreText)
 
     // entitize
-    _.nextMoreText = entitize(_.nextMoreText)
-    _.prevMoreText = entitize(_.prevMoreText)
     _.nextText = entitize(_.nextText)
     _.prevText = entitize(_.prevText)
 
@@ -120,8 +118,8 @@
   }
 
   PageNavigator.prototype.create = function(current, max) {
-    var analyseRst = pageAnalyse(current, max, this._navSize)
     var setting = this._setting
+    var analyseRst = pageAnalyse(current, max, setting.size)
     var str = ''
 
     var _prevHelper = analyseRst.prev?setting.prevHelper:setting.prevDisabledHelper
@@ -177,8 +175,6 @@
       current: current,
       max: max
     })
-
-
 
     return str;
   }
