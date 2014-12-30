@@ -5,8 +5,10 @@ page-navigator
 ```
 git clone git@github.com:meowtec/page-navigator.git
 cd page-navigator
-open example.html
 ```
+PageNavigator 有 js/php/python 三种版本，有三个例子文件 (example.) html/php/py 分别与之对应。
+你可以直接在浏览器中打开 `example.html`
+
 
 #### 使用
 ##### 初始化
