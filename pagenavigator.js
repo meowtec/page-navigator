@@ -1,6 +1,5 @@
 ;(function(){
   var pageAnalyse = function(current, max, size) {
-    size = size || 7
     var prev,
       next,
       prevMore,

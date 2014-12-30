@@ -1,6 +1,6 @@
 # coding:utf-8
 
-def page_analyse(current, max, size=7):
+def page_analyse(current, max, size):
 
     middle_number = size/2+1
 
