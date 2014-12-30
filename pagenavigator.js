@@ -178,5 +178,27 @@
 
     return str;
   }
-  window.PageNavigator = PageNavigator
+
+  var _module = (typeof require === 'function' && typeof exports === 'object' && typeof module === 'object' && module)
+  var defineAmd = (typeof define === 'function' && define['amd'] && define)
+  var defineCmd = (typeof define === 'function' && define['cmd'] && define)
+  var _window = (typeof window === 'object' && window)
+
+  // CommonJS/Node.js
+  if(_module){
+    _module.exports = PageNavigator
+  // AMD/require.js
+  }else if(defineAmd){
+    define([], function() {
+      return PageNavigator
+    })
+  // CMD/Sea.js
+  }else if(defineCmd){
+    define(function(require, exports, module) {
+      module.exports = PageNavigator
+    })
+  // Browser script tag
+  }else if(_window){
+    _window.PageNavigator = PageNavigator
+  }
 })()
