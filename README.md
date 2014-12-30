@@ -24,7 +24,7 @@ var html = nav.create(currentPage, maxPage) // html 字符串
 @return: 导航 html 字符串
 
 #### 设置
-PageNavigator 在初始化时可以传入一个设置参数，类型为 Object:
+`PageNavigator(setting)` 在初始化时可以传入一个设置参数`setting`，类型为 Object:
 ```
 var nav2 = new PageNavigator({
   linkHelper: 'list.html?page={{page}}&from={{current}}&max={{max}}',
@@ -36,9 +36,11 @@ var nav2 = new PageNavigator({
 ```
 
 #### 自定义 helper
+默认的导航以`<span>`和`<a>`标签组成，假设我们要将显示数字的节点换成`<button>`标签，在 setting 中添加`numberHelper`和`currentHelper`:
 ```
 var nav3 = new PageNavigator({
   numberHelper: '<button href="{{link}}" class="item number" data-page="{{page}}">{{page}}</button>',
   currentHelper: '<button class="item number current" data-page="{{page}}" disabled="disabled">{{page}}</button>'
 })
 ```
+可定义的 helper 列表请查看源代码。
