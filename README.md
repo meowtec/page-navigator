@@ -9,27 +9,36 @@ open example.html
 ```
 
 #### 使用
+##### 初始化
 ```
 var nav = new PageNavigator()
-var html = nav.create(1, 5)
+
 ```
+##### 生成导航
+```
+var html = nav.create(currentPage, maxPage) // html 字符串
+```
+ - currentPage: 当前页, number
+ - maxPage: 总页数, number
 
-##### create(currentPage, maxPage)
- - currentPage: 当前页
- - maxPage: 总页数
-
-@return:String 导航 html 字符串
+@return: 导航 html 字符串
 
 #### 设置
 PageNavigator 在初始化时可以传入一个设置参数，类型为 Object:
 ```
 var nav2 = new PageNavigator({
-  linkHelper: function(page){
-    return 'list.html?page=' + page
-  },
-  prevText: '← prev',
-  nextText: 'next →',
-  moreText: '......',
-  size: 9
+  linkHelper: 'list.html?page={{page}}&from={{current}}&max={{max}}',
+  prevText: '←',
+  nextText: '→',
+  moreText: '……',
+  size: 9,
+})
+```
+
+#### 自定义 helper
+```
+var nav3 = new PageNavigator({
+  numberHelper: '<button href="{{link}}" class="item number" data-page="{{page}}">{{page}}</button>',
+  currentHelper: '<button class="item number current" data-page="{{page}}" disabled="disabled">{{page}}</button>'
 })
 ```
