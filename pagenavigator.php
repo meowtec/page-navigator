@@ -24,18 +24,16 @@ class PageNavigator {
       $setting = $args[0];
     }
     $_ = $this->cloneObject(array($this->defaul_setting, $setting));
-    $this->setting = $_;
-
     if(empty($_['prevMoreHelper'])) $_['prevMoreHelper'] = $_['moreHelper'];
     if(empty($_['nextMoreHelper'])) $_['nextMoreHelper'] = $_['moreHelper'];
     if(empty($_['prevMoreText'])) $_['prevMoreText'] = $_['moreText'];
     if(empty($_['nextMoreText'])) $_['nextMoreText'] = $_['moreText'];
-
     // entitize
     $_['nextText'] = htmlentities($_['nextText']);
     $_['prevText'] = htmlentities($_['prevText']);
     $_['prevMoreText'] = htmlentities($_['prevMoreText']);
     $_['nextMoreText'] = htmlentities($_['nextMoreText']);
+    $this->setting = $_;
   }
 
   function create($current, $max) {
@@ -63,7 +61,6 @@ class PageNavigator {
         'max'=>$max
       ));
     }
-
     for ($i = $rst['from']; $i <= $rst['to']; $i++) {
       $_helper = $i === $current?$_['currentHelper']:$_['numberHelper'];
       $str = $str . $this->stringReplace($_helper, array(
@@ -112,7 +109,6 @@ class PageNavigator {
 
   function pageAnalyse($current, $max, $size) {
     $middle_number = floor($size/2)+1;
-    $size = $size || 7;
     $prev = $current > 1 ? $current - 1 : null;
     $next = $max > $current ? $current + 1 : null;
 
@@ -162,13 +158,4 @@ class PageNavigator {
     return $link;
   }
 }
-
-$nav = new PageNavigator(array(
-  'linkHelper'=>'list.html?page={{page}}&from={{current}}&max={{max}}',
-  'prevText'=>'←',
-  'nextText'=>'→',
-  'moreText'=>'……',
-  'size'=>9
-));
-echo $nav->create(2, 10);
 ?>
