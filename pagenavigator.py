@@ -41,7 +41,10 @@ def page_analyse(current, max, size):
 
 def string_replace(string, **data):
     for key in data:
-        string = string.replace('{{' + key + '}}', str(data[key]))
+        value = data[key]
+        if value == None:
+            value = ''
+        string = string.replace('{{' + key + '}}', str(value))
     return string
 
 
