@@ -103,17 +103,11 @@
   }
 
   PageNavigator.prototype._link = function(page, current, max) {
-    var link
-    if(page == null){
-      link = ''
-    }else{
-      link = stringReplace(this._setting.linkHelper, {
-        page: page,
-        current: current,
-        max: max
-      })
-    }
-    return link
+    return stringReplace(this._setting.linkHelper, {
+      page: page,
+      current: current,
+      max: max
+    })
   }
 
   PageNavigator.prototype.create = function(current, max) {

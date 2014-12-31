@@ -118,8 +118,4 @@ class PageNavigator:
         return html
 
     def __link(self, page, current=None, max=None):
-        if page is None:
-            link = ''
-        else:
-            link = string_replace(self._setting['link_helper'], page=page, current=current, max=max)
-        return link
+        return string_replace(self._setting['link_helper'], page=page, current=current, max=max)

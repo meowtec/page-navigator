@@ -146,16 +146,11 @@ class PageNavigator {
   }
 
   private function link($page, $current, $max) {
-    if($page == null){
-      $link = '';
-    }else{
-      $link = $this->stringReplace($this->setting['linkHelper'], array(
-        'page'=>$page,
-        'current'=>$current,
-        'max'=>$max
-      ));
-    }
-    return $link;
+    return $this->stringReplace($this->setting['linkHelper'], array(
+      'page'=>$page,
+      'current'=>$current,
+      'max'=>$max
+    ));
   }
 }
 ?>
