@@ -85,92 +85,93 @@
   var entitize = function(str) {
     return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
   }
+  var PageNavigator = (function() {
+    function PageNavigator(setting) {
+      var _setting = cloneObject(defaultSetting, setting)
+      this._setting = _setting
+      var _ = _setting
+      _.prevMoreHelper = _.prevMoreHelper || _.moreHelper
+      _.nextMoreHelper = _.nextMoreHelper || _.moreHelper
+      _.prevMoreText = entitize(_.prevMoreText || _.moreText)
+      _.nextMoreText = entitize(_.nextMoreText || _.moreText)
 
-  function PageNavigator(setting) {
-    var _setting = cloneObject(defaultSetting, setting)
-    this._setting = _setting
-    var _ = _setting
-    _.prevMoreHelper = _.prevMoreHelper || _.moreHelper
-    _.nextMoreHelper = _.nextMoreHelper || _.moreHelper
-    _.prevMoreText = entitize(_.prevMoreText || _.moreText)
-    _.nextMoreText = entitize(_.nextMoreText || _.moreText)
+      // entitize
+      _.nextText = entitize(_.nextText)
+      _.prevText = entitize(_.prevText)
+    }
 
-    // entitize
-    _.nextText = entitize(_.nextText)
-    _.prevText = entitize(_.prevText)
-
-
-  }
-
-  PageNavigator.prototype._link = function(page, current, max) {
-    return stringReplace(this._setting.linkHelper, {
-      page: page,
-      current: current,
-      max: max
-    })
-  }
-
-  PageNavigator.prototype.create = function(current, max) {
-    var setting = this._setting
-    var analyseRst = pageAnalyse(current, max, setting.size)
-    var str = ''
-
-    var _prevHelper = analyseRst.prev?setting.prevHelper:setting.prevDisabledHelper
-    str = str + stringReplace(_prevHelper, {
-      page: analyseRst.prev,
-      link: this._link(analyseRst.prev, current, max),
-      text: setting.prevText,
-      current: current,
-      max: max
-    })
-
-    if (analyseRst.prevMore) {
-      str = str + stringReplace(setting.numberHelper, {
-        page: 1,
-        link: this._link(1, current, max),
-        current: current,
-        max: max
-      }) + stringReplace(setting.prevMoreHelper, {
-        text: setting.prevMoreText,
+    PageNavigator.prototype._link = function(page, current, max) {
+      return stringReplace(this._setting.linkHelper, {
+        page: page,
         current: current,
         max: max
       })
     }
 
-    for (var i = analyseRst.from; i <= analyseRst.to; i++) {
-      var _helper = i === current?setting.currentHelper:setting.numberHelper
-      str = str + stringReplace(_helper, {
-        page: i,
-        link: this._link(i, current, max),
+    PageNavigator.prototype.create = function(current, max) {
+      var setting = this._setting
+      var analyseRst = pageAnalyse(current, max, setting.size)
+      var str = ''
+
+      var _prevHelper = analyseRst.prev?setting.prevHelper:setting.prevDisabledHelper
+      str = str + stringReplace(_prevHelper, {
+        page: analyseRst.prev,
+        link: this._link(analyseRst.prev, current, max),
+        text: setting.prevText,
         current: current,
         max: max
       })
-    }
 
-    if (analyseRst.nextMore) {
-      str = str + stringReplace(setting.nextMoreHelper, {
-        text: setting.nextMoreText,
-        current: current,
-        max: max
-      }) + stringReplace(setting.numberHelper, {
-        page: max,
-        link: this._link(max, current, max),
+      if (analyseRst.prevMore) {
+        str = str + stringReplace(setting.numberHelper, {
+          page: 1,
+          link: this._link(1, current, max),
+          current: current,
+          max: max
+        }) + stringReplace(setting.prevMoreHelper, {
+          text: setting.prevMoreText,
+          current: current,
+          max: max
+        })
+      }
+
+      for (var i = analyseRst.from; i <= analyseRst.to; i++) {
+        var _helper = i === current?setting.currentHelper:setting.numberHelper
+        str = str + stringReplace(_helper, {
+          page: i,
+          link: this._link(i, current, max),
+          current: current,
+          max: max
+        })
+      }
+
+      if (analyseRst.nextMore) {
+        str = str + stringReplace(setting.nextMoreHelper, {
+          text: setting.nextMoreText,
+          current: current,
+          max: max
+        }) + stringReplace(setting.numberHelper, {
+          page: max,
+          link: this._link(max, current, max),
+          current: current,
+          max: max
+        })
+      }
+
+      var _nextHelper = analyseRst.next?setting.nextHelper:setting.nextDisabledHelper
+      str = str + stringReplace(_nextHelper, {
+        page: analyseRst.next,
+        link: this._link(analyseRst.next, current, max),
+        text: setting.nextText,
         current: current,
         max: max
       })
+      return str
     }
-
-    var _nextHelper = analyseRst.next?setting.nextHelper:setting.nextDisabledHelper
-    str = str + stringReplace(_nextHelper, {
-      page: analyseRst.next,
-      link: this._link(analyseRst.next, current, max),
-      text: setting.nextText,
-      current: current,
-      max: max
-    })
-
-    return str;
-  }
+    return function(setting) {
+      return new PageNavigator()
+    }
+  })()
 
   var _module = (typeof require === 'function' && typeof exports === 'object' && typeof module === 'object' && module)
   var defineAmd = (typeof define === 'function' && define['amd'] && define)
