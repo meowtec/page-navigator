@@ -169,7 +169,7 @@
       return str
     }
     return function(setting) {
-      return new PageNavigator()
+      return new PageNavigator(setting)
     }
   })()
 
