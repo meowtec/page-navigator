@@ -2,6 +2,8 @@ page-navigator
 ==============
 
 #### 查看例子
+[在线 Demo](http://meowtec.github.io/demo/page-navigator/example.html)
+
 ```
 git clone git@github.com:meowtec/page-navigator.git
 cd page-navigator
@@ -25,7 +27,11 @@ var html = nav.create(currentPage, maxPage) // html 字符串
  - currentPage: 当前页, number
  - maxPage: 总页数, number
 
-@return: 导航 html 字符串
+返回值`html`为生成的导航 html 源码，格式类似于：
+```
+<a>上一页</a><a>1</a><a>2</a><a>下一页</a>
+```
+如果你喜欢用`<li>`做导航，你也可以自定义`helper`来使用`<li>`取代`<a>`。
 
 #### 设置
 `PageNavigator(setting)`在初始化时可以传入一个设置参数`setting`，类型为`Object`:
@@ -47,4 +53,5 @@ var nav3 = new PageNavigator({
   currentHelper: '<button class="item number current" data-page="{{page}}" disabled="disabled">{{page}}</button>'
 })
 ```
-可定义的 helper 列表请查看源代码。
+
+###### 可定义的 helper 列表请查看源代码。
