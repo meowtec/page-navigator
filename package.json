@@ -1,0 +1,19 @@
+{
+  "name": "page-navigator",
+  "version": "0.1.1",
+  "description": "page navigation.",
+  "main": "pagenavigator.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/meowtec/page-navigator.git"
+  },
+  "author": "Berton Zhu <bertonzh@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/meowtec/page-navigator/issues"
+  },
+  "homepage": "https://github.com/meowtec/page-navigator"
+}
