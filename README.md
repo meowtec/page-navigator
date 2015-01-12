@@ -13,6 +13,13 @@ cd page-navigator
 
 `pagenavigator.js`可以直接通过`<script>`标签在浏览器中引入，也可以使用`require.js/sea.js`等工具加载，也可以在`nodejs`中使用。
 
+NPM 安装 & nodejs 调用
+```
+npm install page-navigator
+```
+```
+var PageNavigator = require('page-navigator')
+```
 
 #### 使用
 ##### 初始化
