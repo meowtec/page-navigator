@@ -125,7 +125,7 @@ class PageNavigator {
         $nextMore = true;
       } else if ($max - $current < $middle_number) {
         $to = $max;
-        $from = $max - Math.ceil($size / 2) - 1;
+        $from = $max - ceil($size / 2) - 1;
         $prevMore = true;
         $nextMore = false;
       } else {
@@ -135,7 +135,7 @@ class PageNavigator {
         $nextMore = true;
       }
     }
-    return array('prev'=>$prev,'next'=>$next,'prevMore'=>$prevMore, 'nextMore'=>$nextMore, 'from'=>$from,'to'=>$to);
+    return array('prev'=>$prev,'next'=>$next,'prevMore'=>$prevMore, 'nextMore'=>$nextMore, 'from'=>intval($from),'to'=>intval($to));
   }
 
   private function stringReplace($str, $dict) {
