@@ -125,7 +125,7 @@ class PageNavigator {
         $nextMore = true;
       } else if ($max - $current < $middle_number) {
         $to = $max;
-        $from = $max - Math.ceil($size / 2) - 1;
+        $from = $max - ceil($size / 2) - 1;
         $prevMore = true;
         $nextMore = false;
       } else {
