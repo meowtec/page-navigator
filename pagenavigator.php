@@ -135,7 +135,7 @@ class PageNavigator {
         $nextMore = true;
       }
     }
-    return array('prev'=>$prev,'next'=>$next,'prevMore'=>$prevMore, 'nextMore'=>$nextMore, 'from'=>$from,'to'=>$to);
+    return array('prev'=>$prev,'next'=>$next,'prevMore'=>$prevMore, 'nextMore'=>$nextMore, 'from'=>intval($from),'to'=>intval($to));
   }
 
   private function stringReplace($str, $dict) {
